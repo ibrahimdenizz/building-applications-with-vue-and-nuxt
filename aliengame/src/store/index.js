@@ -63,6 +63,12 @@ export default createStore({
           ? (state.uiState = "won")
           : (state.uiState = "lost");
       }
+    },
+    playAgain(state) {
+      state.uiState = "start";
+      state.character = "";
+      state.questionIndex = 0;
+      state.score = 0;
     }
   },
   actions: {},
