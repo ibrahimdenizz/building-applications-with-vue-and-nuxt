@@ -1,5 +1,5 @@
 <template>
-  <main class="container"><h1>Hi from Homepage!</h1></main>
+  <main class="container"><app-header></app-header></main>
 </template>
 
 <script>
