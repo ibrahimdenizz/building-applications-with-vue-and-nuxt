@@ -4,6 +4,7 @@
       <app-menu />
       <Nuxt />
     </div>
+    <app-footer />
   </div>
 </template>
 
