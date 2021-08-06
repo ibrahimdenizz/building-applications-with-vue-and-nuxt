@@ -1,5 +1,8 @@
 <template>
-  <main class="container"><app-header></app-header></main>
+  <main class="container">
+    <app-header />
+    <app-restaurant-info />
+  </main>
 </template>
 
 <script>
