@@ -8,25 +8,44 @@
     ></section>
     <section class="details">
       <h2>{{ currentItem.item }}</h2>
-      <h3>Price: ${{ currentItem.price }}</h3>
+      <h3>Price: ${{ currentItem.price.toFixed(2) }}</h3>
       <div class="quantity">
         <input v-model="itemCount" type="number" min="1" />
-        <button class="primary">Add to Cart ${{ totalPrice }}</button>
+        <button @click="addToCart" class="primary">
+          Add to Cart ${{ totalPrice }}
+        </button>
       </div>
+      <fieldset>
+        <legend><h3>Options</h3></legend>
+        <div v-for="option in currentItem.options" :key="option">
+          <input
+            v-model="selectedOptions"
+            :id="option"
+            type="radio"
+            name="option"
+            :value="option"
+          />
+          <label :for="option">{{ option }} </label>
+        </div>
+      </fieldset>
+
       <fieldset>
         <legend><h3>Add Ons</h3></legend>
         <div v-for="addOn in currentItem.addOns" :key="addOn">
           <input
-            @change="e => (selectedAddOn = e.target.value)"
+            v-model="selectedAddOns"
             :id="addOn"
             type="checkbox"
             name="addon"
             :value="addOn"
-            :checked="addOn === selectedAddOn ? 'true' : ''"
           />
           <label :for="addOn">{{ addOn }} </label>
         </div>
       </fieldset>
+      <app-toast v-if="cartSubmitted"
+        >Order submitted <br />
+        Check out more <nuxt-link to="/restaurants">restaurants</nuxt-link>
+      </app-toast>
     </section>
     <section class="options">
       <h3>Description</h3>
@@ -43,7 +62,9 @@ export default {
     return {
       id: this.$route.params.id,
       itemCount: 1,
-      selectedAddOn: ""
+      selectedAddOns: [],
+      selectedOptions: "",
+      cartSubmitted: false
     };
   },
   computed: {
@@ -67,6 +88,18 @@ export default {
     },
     totalPrice() {
       return Number(this.currentItem.price * this.itemCount).toFixed(2);
+    }
+  },
+  methods: {
+    addToCart() {
+      let formOutput = {
+        item: this.currentItem.item,
+        count: this.itemCount,
+        options: this.selectedOptions,
+        addOns: this.selectedAddOns,
+        combinedPrice: this.totalPrice
+      };
+      this.cartSubmitted = true;
     }
   }
 };
