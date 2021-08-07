@@ -1,7 +1,7 @@
 <template>
   <main class="container cart">
-    <h2>Cart</h2>
-    <table>
+    <h2>Your Cart</h2>
+    <table v-if="cart.length">
       <thead>
         <tr>
           <th>Item</th>
@@ -30,6 +30,7 @@
         </tr>
       </tbody>
     </table>
+    <app-empty-cart v-else />
   </main>
 </template>
 

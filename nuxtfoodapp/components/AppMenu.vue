@@ -10,12 +10,19 @@
         </nuxt-link>
       </li>
     </ul>
+    <div v-if="totalCount" class="smallnum">{{ totalCount }}</div>
     <nuxt-link to="/cart">Cart</nuxt-link>
   </nav>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters(["totalCount"])
+  }
+};
 </script>
 
 <style lang="scss" scoped></style>
