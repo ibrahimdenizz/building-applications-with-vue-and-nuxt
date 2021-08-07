@@ -15,7 +15,7 @@
           Add to Cart ${{ totalPrice }}
         </button>
       </div>
-      <fieldset>
+      <fieldset v-if="currentItem.options">
         <legend><h3>Options</h3></legend>
         <div v-for="option in currentItem.options" :key="option">
           <input
@@ -29,7 +29,7 @@
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset v-if="currentItem.addOns">
         <legend><h3>Add Ons</h3></legend>
         <div v-for="addOn in currentItem.addOns" :key="addOn">
           <input
