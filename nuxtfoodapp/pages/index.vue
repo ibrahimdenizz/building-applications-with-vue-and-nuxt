@@ -1,10 +1,16 @@
 <template>
   <main class="container">
     <app-header />
-    <app-restaurant-info />
+    <app-restaurant-info :data-source="foodData" />
   </main>
 </template>
 
 <script>
-export default {};
+import { mapState } from "vuex";
+
+export default {
+  computed: {
+    ...mapState(["foodData"])
+  }
+};
 </script>
