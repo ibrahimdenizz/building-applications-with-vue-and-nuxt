@@ -99,7 +99,9 @@ export default {
         addOns: this.selectedAddOns,
         combinedPrice: this.totalPrice
       };
+
       this.cartSubmitted = true;
+      this.$store.commit("addToCart", formOutput);
     }
   }
 };
