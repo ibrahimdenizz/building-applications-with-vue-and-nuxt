@@ -19,7 +19,7 @@
         <legend><h3>Options</h3></legend>
         <div v-for="option in currentItem.options" :key="option">
           <input
-            v-model="selectedOptions"
+            v-model="v$.selectedOptions.$model"
             :id="option"
             type="radio"
             name="option"
@@ -33,7 +33,7 @@
         <legend><h3>Add Ons</h3></legend>
         <div v-for="addOn in currentItem.addOns" :key="addOn">
           <input
-            v-model="selectedAddOns"
+            v-model="v$.selectedAddOns.$model"
             :id="addOn"
             type="checkbox"
             name="addon"
@@ -46,6 +46,10 @@
         >Order submitted <br />
         Check out more <nuxt-link to="/restaurants">restaurants</nuxt-link>
       </app-toast>
+      <app-toast v-if="errors">
+        Please select options <br />
+        addons before continuing
+      </app-toast>
     </section>
     <section class="options">
       <h3>Description</h3>
@@ -56,6 +60,8 @@
 
 <script>
 import { mapState } from "vuex";
+import { required } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 
 export default {
   data() {
@@ -64,7 +70,19 @@ export default {
       itemCount: 1,
       selectedAddOns: [],
       selectedOptions: "",
-      cartSubmitted: false
+      cartSubmitted: false,
+      errors: false
+    };
+  },
+  setup: () => ({ v$: useVuelidate() }),
+  validations() {
+    return {
+      selectedAddOns: {
+        required
+      },
+      selectedOptions: {
+        required
+      }
     };
   },
   computed: {
@@ -100,8 +118,18 @@ export default {
         combinedPrice: this.totalPrice
       };
 
-      this.cartSubmitted = true;
-      this.$store.commit("addToCart", formOutput);
+      let addOnError = this.v$.selectedAddOns.$invalid;
+      let optionError = this.currentItem.options
+        ? this.v$.selectedOptions.$invalid
+        : false;
+
+      if (addOnError || optionError) {
+        this.errors = true;
+      } else {
+        this.errors = false;
+        this.cartSubmitted = true;
+        this.$store.commit("addToCart", formOutput);
+      }
     }
   }
 };
